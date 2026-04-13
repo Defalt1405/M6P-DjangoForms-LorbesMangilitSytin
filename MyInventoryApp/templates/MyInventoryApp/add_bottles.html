@@ -1,0 +1,95 @@
+{% extends 'MyInventoryApp/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="card h-100 col-9">
+
+    <div class="card-header bg-light py-3">
+        <h3>Type in Bottle Details:</h3>
+    </div>
+
+    <div class="px-3">
+
+        <form method="POST" action="{% url 'add_bottles' %}">
+        {% csrf_token %}
+
+        <div class="row g-3 mt-1">
+            <div class="col-12 pb-3">
+                <label for="sku" class="form-label">SKU:</label>
+                <input type="text" id="sku" name="sku" class="form-control" required>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-12 pb-3">
+                <label for="brand" class="form-label">Brand:</label>
+                <input type="text" id="brand" name="brand" class="form-control" required>
+            </div>
+        </div>
+
+        <div class="row gx-5">
+            <div class="col-6">
+                <label for="cost" class="form-label">Cost:</label>
+                <input type="number" min="0" step="0.01" id="cost" name="cost" class="form-control w-50" required>
+            </div>
+
+            <div class="col-6">
+                <label for="size" class="form-label">Size:</label>
+                <select id="size" name="size" class="form-control w-50" required>
+                    <option value="">Select bottle size</option>
+                    <option value="14oz">14oz</option>
+                    <option value="18oz">18oz</option>
+                    <option value="22oz">22oz</option>
+                    <option value="32oz">32oz</option>
+                    <option value="40oz">40oz</option>
+                    <option value="64oz">64oz</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row gx-5 py-3">
+            <div class="col-6">
+                <label for="color" class="form-label">Color:</label>
+                <input type="text" id="color" name="color" class="form-control w-50" required>
+            </div>
+
+            <div class="col-6">
+                <label for="mouthsize" class="form-label">Mouth Size:</label>
+                <select id="mouthsize" name="mouthsize" class="form-control w-50" required>
+                    <option value="">Select mouth size</option>
+                    <option value="small">Small</option>
+                    <option value="standard">Standard</option>
+                    <option value="wide">Wide</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row gx-5 py-3">
+            <div class="col-6">
+                <label for="quantity" class="form-label">Quantity:</label>
+                <input type="number" min="1" id="quantity" name="quantity" class="form-control w-50" required>
+            </div>
+
+            <div class="col-6">
+                <label for="supplier" class="form-label">Supplier:</label>
+                <select id="supplier" name="supplier" class="form-control w-50" required>
+                    <option value="">Select a supplier</option>
+                    {% for supplier in suppliers %}
+                        <option value="{{ supplier.id }}">{{ supplier.name }}</option>
+                    {% endfor %}    
+                </select>
+            </div>
+        </div>
+
+        <div class="text-start py-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Confirm</button>
+            <a href="{% url 'view_suppliers' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}
