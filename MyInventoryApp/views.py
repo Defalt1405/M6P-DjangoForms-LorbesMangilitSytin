@@ -1,7 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from MyInventoryApp.models import Supplier, WaterBottle, Accounts
 
+logged_user = 0 #global key
+
+# ============================================================
+# Login and Signup
+
 def login(request):
+    global logged_user
+
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -9,6 +16,7 @@ def login(request):
         try:
             user = Accounts.objects.get(username=username, password=password)
             request.session['account_id'] = user.id
+            logged_user = user.id
             return redirect('view_suppliers')
 
         except Accounts.DoesNotExist:
@@ -37,25 +45,52 @@ def signup(request):
 
     return render(request, 'MyInventoryApp/signup.html')
 
+def logout(request):
+    global logged_user
+    logged_user = 0
+    return redirect('login')
+
+# ====================================================================================================
+# Suppliers and Bottles
 
 def view_supplier(request):
+    global logged_user
+    if logged_user == 0:
+        return redirect('login')
+    
     supplier_objects = Supplier.objects.all()
     account_id = request.session.get('account_id')
     return render(request, 'MyInventoryApp/view_suppliers.html', {'suppliers': supplier_objects, 'account_id': account_id})
 
 def view_bottles(request):
+    global logged_user
+    if logged_user == 0:
+        return redirect('login')
+    
     bottle_objects = WaterBottle.objects.all()
     return render(request, 'MyInventoryApp/view_bottles.html', {'bottles':bottle_objects})  
 
 def view_bottle_details(request, pk):
+    global logged_user
+    if logged_user == 0:
+        return redirect('login')
+    
     b = get_object_or_404(WaterBottle, pk=pk)
     return render(request, 'MyInventoryApp/view_bottle_detail.html', {'b': b})
 
 def delete_bottle(request, pk):
+    global logged_user
+    if logged_user == 0:
+        return redirect('login')
+    
     WaterBottle.objects.filter(pk=pk).delete()
     return redirect('view_bottles')
 
 def add_bottle(request):
+    global logged_user
+    if logged_user == 0:
+        return redirect('login')
+    
     supplier_objects = Supplier.objects.all()
 
     if request.method == "POST":
@@ -84,7 +119,14 @@ def add_bottle(request):
     
     return render(request, 'MyInventoryApp/add_bottles.html', {'suppliers': supplier_objects})
 
+# ====================================================================================================
+# Account Management
+
 def change_password(request, pk):
+    global logged_user
+    if logged_user == 0:
+        return redirect('login')
+    
     account = Accounts.objects.get(id=pk)
 
     if request.method == "POST":
@@ -117,10 +159,18 @@ def change_password(request, pk):
     return render(request, 'MyInventoryApp/change_password.html', {'account': account})
 
 def manage_account(request, pk):
+    global logged_user
+    if logged_user == 0:
+        return redirect('login')
+    
     account = Accounts.objects.get(id=pk)
     return render(request, 'MyInventoryApp/manage_account.html', {'account': account})
 
 def delete_account(request, pk):
+    global logged_user
+    if logged_user == 0:
+        return redirect('login')
+    
     account = Accounts.objects.get(id=pk)
     account.delete()
     return redirect('login')
