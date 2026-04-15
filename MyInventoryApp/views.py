@@ -140,17 +140,18 @@ def change_password(request, pk):
                 'error': 'Current password is incorrect. '
             }) 
 
+        if new_password == account.password:    
+            return render(request, 'MyInventoryApp/change_password.html', {
+                'account': account,
+                'error': 'New password cannot be the same as the current password. '
+            })
+        
         if new_password != confirm_password:
             return render(request, 'MyInventoryApp/change_password.html', {
                 'account': account,
                 'error': 'New passwords do not match. '
             })
-
-        if new_password == current_password:    
-            return render(request, 'MyInventoryApp/change_password.html', {
-                'account': account,
-                'error': 'New password cannot be the same as the current password. '
-            })
+        
         
         account.password = new_password
         account.save()
