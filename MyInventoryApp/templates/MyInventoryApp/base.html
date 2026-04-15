@@ -1,0 +1,44 @@
+{% load static %}
+
+<html>
+    <head>
+        <title>The List</title>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static '/bootstrap/css/custom.css' %}">
+        <script src="{% static '/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <style>
+            html, body { height: 100%; margin: 0; }
+            body { display: flex; flex-direction: column; }
+            .content-wrap { flex: 1; }
+            .footer { background-color: #590404; color: white; text-align: center; padding: 10px 0; }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark mb-3 sticky-top position-relative" style="background-color: #590404;">
+            <div class="container-fluid justify-content-center">
+                <span class="text-white text-center"
+                      style="font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.8rem;">
+                    My Inventory System
+                </span>
+            </div>
+        </nav>
+
+        <div class="content-wrap">
+            <div class="container">
+                <div class="row">
+                    <div class="col-2">
+                        {% block sidebar %}{% endblock %}
+                    </div>
+                    <div class="col-10">
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">&copy; 2020</div>
+        </footer>
+    </body>
+</html>

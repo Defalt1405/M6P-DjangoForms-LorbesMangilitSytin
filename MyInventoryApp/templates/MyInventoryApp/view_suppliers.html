@@ -1,0 +1,33 @@
+{% extends 'MyInventoryApp/base.html' %}
+{% load static %}
+
+{% block sidebar %} 
+<div class="d-flex flex-column gap-2 mt-2">  
+    <a href="{% url 'add_bottles' %}" style="color:black">Add Water Bottle</a>
+    <a href="{% url 'manage_account' pk=account_id %}" style="color:black">Manage Account</a>
+    <a href="{% url 'logout' %}" style="color:black">Logout</a>
+</div>     
+{% endblock %}
+
+{% block content %}
+<div class="col-12">
+    <table class="table table-striped fs-5">
+        <thead>
+            <tr>
+                <th class="table-dark" scope="col" style="width: 40%;"> Name </th>
+                <th class="table-dark" scope="col" style="width: 30%;"> City </th>
+                <th class="table-dark" scope="col" style="width: 30%;"> Country </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in suppliers %}
+            <tr style="height: 55px;">
+                <td class="align-middle"><a href="{% url 'view_bottles' supplier_id=s.pk %}"> {{ s.name }} </a></td>
+                <td class="align-middle"> {{ s.city }} </td>
+                <td class="align-middle"> {{ s.country }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
